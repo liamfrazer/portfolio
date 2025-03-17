@@ -32,9 +32,28 @@ const WakaTimeCard = () => {
 		setLoading(false);
 	};
 
-	// Auto-refresh countdown
+	// Initial fetch on mount
 	useEffect(() => {
-		if (timeUntilRefresh === null) return;
+		fetchData();
+	}, []);
+
+	// Automatically refresh the data when the cache expires
+	// TODO: Add Toast effect once cache automatically refreshes
+	useEffect(() => {
+		if (timeUntilRefresh === null || timeUntilRefresh > 0) return;
+
+		const interval = setInterval(() => {
+			if (timeUntilRefresh <= 0) {
+				fetchData();
+			}
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, [timeUntilRefresh]);
+
+	// Countdown Timer Effect decreasing the time remaining until the next refresh
+	useEffect(() => {
+		if (timeUntilRefresh === null || timeUntilRefresh <= 0) return;
 
 		const interval = setInterval(() => {
 			setTimeUntilRefresh((prev) => (prev && prev > 1000 ? prev - 1000 : 0));
@@ -42,10 +61,6 @@ const WakaTimeCard = () => {
 
 		return () => clearInterval(interval);
 	}, [timeUntilRefresh]);
-
-	useEffect(() => {
-		fetchData();
-	}, []);
 
 	return (
 		<div className="space-y-4">
