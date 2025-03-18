@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const WAKATIME_EMBEDDABLE_CODING_ACTIVITY_TABLE = process.env.WAKATIME_EMBEDDABLE_CODING_ACTIVITY_TABLE || "";
-const WAKATIME_CACHE_DURATION = Number(process.env.WAKATIME_CACHE_DURATION) || 60 * 60 * 10; // default 1 hour
+const WAKATIME_CACHE_DURATION = Number(process.env.WAKATIME_CACHE_DURATION) || 60 * 60 * 1000; // default 1 hour
 
 let cachedData: any = null;
 let lastFetchTime = 0;

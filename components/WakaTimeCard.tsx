@@ -1,9 +1,12 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import { WakaTimeResponse } from "@/lib/types";
-import { CircleCheckBig, AlertCircle, Clock } from "lucide-react";
-import { Card, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { CircleCheckBig, AlertCircle, Hourglass } from "lucide-react";
+
+import { Card, CardDescription, CardHeader, CardTitle, CardFooter, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+
+import StatsCard from "@/components/StatsCard";
 
 const WakaTimeCard = () => {
 	const [wakaData, setWakaData] = useState<WakaTimeResponse | null>(null);
@@ -146,11 +149,16 @@ const WakaTimeCard = () => {
 				<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
 					<div className="flex flex-1 flex-col justify-center cap-1 px-6 py-5 sm:py-6">
 						<CardTitle>WakaTime Stats</CardTitle>
-						<CardDescription className="min-h-6">
-							Personal time spent coding since {loading ? <Skeleton className="h-4 w-64 inline-block" /> : error ? <span className="text-red-500">Error loading data</span> : `${wakaData?.human_readable_range || "N/A"}`}
-						</CardDescription>
+						<CardDescription className="min-h-6">Personal time spent coding</CardDescription>
 					</div>
 				</CardHeader>
+				<CardContent>
+					<div className="flex flex-col md:flex-row justify-between gap-5 mb-5 p-5">
+						<StatsCard title="Hours" count={300} icon={<Hourglass className="text-slate-500" size={72} />} />
+						<StatsCard title="Hours" count={300} icon={<Hourglass className="text-slate-500" size={72} />} />
+						<StatsCard title="Hours" count={300} icon={<Hourglass className="text-slate-500" size={72} />} />
+					</div>
+				</CardContent>
 				<CardFooter className="flex-col items-start gap-2 text-sm p-4">
 					<div className="flex items-center gap-1 justify-between leading-none text-muted-foreground min-h-6">
 						<span className="flex items-center gap-1">API Status:</span>

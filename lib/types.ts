@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export interface WakaTimeCategory {
 	name: string; // Category name
 	total: number; // Total time spent in Category
@@ -24,4 +26,10 @@ export interface WakaTimeResponse {
 	human_readable_range: string;
 	lastFetchTime: string;
 	nextRefreshTime: number;
+}
+
+export interface StatsCardProps {
+	title: string;
+	count: number;
+	icon: React.ReactElement<LucideIcon>;
 }
