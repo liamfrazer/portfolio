@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import { WakaTimeResponse, WakaTimeActivityResponse, WakaTimeLanguageResponse } from "@/lib/types";
 import { CircleCheckBig, AlertCircle, Hourglass } from "lucide-react";
 
 import { Card, CardDescription, CardHeader, CardTitle, CardFooter, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import StatsCard from "@/components/StatsCard";
+import WakaTimeCodingActivityChart from "@/components/WakaTimeCodingActivityChart";
+// import StatsCard from "@/components/StatsCard";
+
+import { WakaTimeResponse, WakaTimeActivityResponse, WakaTimeLanguageResponse } from "@/lib/types";
 
 const WakaTimeCard = () => {
 	// Set WakaTime Data States
@@ -166,7 +168,8 @@ const WakaTimeCard = () => {
 					</div>
 				</CardHeader>
 				<CardContent>
-					<div className="flex flex-col md:flex-row justify-between gap-5 mb-5 p-5">{/* <StatsCard title="Languages" count={0} icon={<Hourglass className="text-slate-500" size={72} />} /> */}</div>
+					{/* <div className="flex flex-col md:flex-row justify-between gap-5 mb-5 p-5"><StatsCard title="Languages" count={0} icon={<Hourglass className="text-slate-500" size={72} />} /></div> */}
+					<WakaTimeCodingActivityChart wakaActivityData={wakaActivityData} loading={loading} />
 				</CardContent>
 				<CardFooter className="flex-col items-start gap-2 text-sm p-4">
 					<div className="flex items-center gap-1 justify-between leading-none text-muted-foreground min-h-6">

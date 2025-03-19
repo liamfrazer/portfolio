@@ -26,6 +26,11 @@ export interface WakaTimeActivityResponse {
 	human_readable_range: string;
 }
 
+export interface WakaTimeActivityChartProps {
+	wakaActivityData: WakaTimeActivityResponse | null;
+	loading: boolean;
+}
+
 export interface WakaTimeLanguageResponse {
 	name: string;
 	percent: number;
