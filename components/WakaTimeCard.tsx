@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import { WakaTimeResponse } from "@/lib/types";
+import { WakaTimeResponse, WakaTimeActivityResponse, WakaTimeLanguageResponse } from "@/lib/types";
 import { CircleCheckBig, AlertCircle, Hourglass } from "lucide-react";
 
 import { Card, CardDescription, CardHeader, CardTitle, CardFooter, CardContent } from "@/components/ui/card";
@@ -9,7 +9,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import StatsCard from "@/components/StatsCard";
 
 const WakaTimeCard = () => {
-	const [wakaData, setWakaData] = useState<WakaTimeResponse | null>(null);
+	// Set WakaTime Data States
+	const [wakaAPI, setWakaAPI] = useState<WakaTimeResponse | null>(null);
+	const [wakaActivityData, setWakaActivityData] = useState<WakaTimeActivityResponse | null>(null);
+	const [wakaLanguagesData, setWakaLanguagesData] = useState<WakaTimeLanguageResponse | null>(null);
+	// Set React Component States
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [countdown, setCountdown] = useState<number | null>(null);
@@ -61,10 +65,19 @@ const WakaTimeCard = () => {
 				throw new Error("Invalid data format received");
 			}
 
-			console.log("WakaTime API Response:", data);
+			// TODO: Remove once not required
+			console.log("WakaTime API Response: ", data);
+			console.log("WakaTime Coding Activity Data: ", data.data.codingActivityData);
+			console.log("WakaTime Language Data: ", data.data.languagesActivityData);
 
-			// Update state with new data
-			setWakaData(data);
+			// Update state with new WakaTime data
+			setWakaAPI({
+				status: data.status,
+				lastFetchTime: data.lastFetchTime,
+				nextRefreshTime: data.nextRefreshTime,
+			});
+			setWakaActivityData(data.data.codingActivityData);
+			setWakaLanguagesData(data.data.languagesActivityData);
 
 			// Calculate and set countdown for next refresh
 			if (data.nextRefreshTime && typeof data.nextRefreshTime === "number") {
@@ -153,11 +166,7 @@ const WakaTimeCard = () => {
 					</div>
 				</CardHeader>
 				<CardContent>
-					<div className="flex flex-col md:flex-row justify-between gap-5 mb-5 p-5">
-						<StatsCard title="Hours" count={300} icon={<Hourglass className="text-slate-500" size={72} />} />
-						<StatsCard title="Hours" count={300} icon={<Hourglass className="text-slate-500" size={72} />} />
-						<StatsCard title="Hours" count={300} icon={<Hourglass className="text-slate-500" size={72} />} />
-					</div>
+					<div className="flex flex-col md:flex-row justify-between gap-5 mb-5 p-5">{/* <StatsCard title="Languages" count={0} icon={<Hourglass className="text-slate-500" size={72} />} /> */}</div>
 				</CardContent>
 				<CardFooter className="flex-col items-start gap-2 text-sm p-4">
 					<div className="flex items-center gap-1 justify-between leading-none text-muted-foreground min-h-6">
@@ -170,7 +179,7 @@ const WakaTimeCard = () => {
 									<AlertCircle className="w-4 h-4 mr-1" /> Error
 								</span>
 							) : (
-								<span className={wakaData?.status === "ok" ? "text-green-500" : wakaData?.status === "stale" ? "text-yellow-500" : "text-red-500"}>
+								<span className={wakaAPI?.status === "ok" ? "text-green-500" : wakaAPI?.status === "stale" ? "text-yellow-500" : "text-red-500"}>
 									<CircleCheckBig className="w-4 h-4 mr-1" />
 								</span>
 							)}
@@ -182,7 +191,7 @@ const WakaTimeCard = () => {
 					</div>
 					<div className="flex gap-1 items-center justify-between leading-none text-muted-foreground min-h-6">
 						<span>Last Update:</span>
-						<span>{loading ? <Skeleton className="h-4 w-32" /> : error ? "Failed to update" : wakaData?.lastFetchTime ? new Date(wakaData.lastFetchTime).toLocaleString() : "N/A"}</span>
+						<span>{loading ? <Skeleton className="h-4 w-32" /> : error ? "Failed to update" : wakaAPI?.lastFetchTime ? new Date(wakaAPI.lastFetchTime).toLocaleString() : "N/A"}</span>
 					</div>
 					{error && <div className="text-xs text-red-500 w-full mt-2 p-2 bg-red-50 rounded">Error: {error}</div>}
 				</CardFooter>

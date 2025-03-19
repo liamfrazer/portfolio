@@ -11,7 +11,7 @@ export interface WakaTimeDay {
 	categories: WakaTimeCategory[]; // Array of Categories
 }
 
-export interface WakaTimeResponse {
+export interface WakaTimeActivityResponse {
 	days: WakaTimeDay[];
 	status: string;
 	is_up_to_date: boolean;
@@ -24,6 +24,22 @@ export interface WakaTimeResponse {
 	user_id: string;
 	is_including_today: boolean;
 	human_readable_range: string;
+}
+
+export interface WakaTimeLanguageResponse {
+	name: string;
+	percent: number;
+	color: string;
+	decimal: string;
+	digital: string;
+	hours: number;
+	minutes: number;
+	text: string;
+	total_seconds: number;
+}
+
+export interface WakaTimeResponse {
+	status: string;
 	lastFetchTime: string;
 	nextRefreshTime: number;
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 const WAKATIME_EMBEDDABLE_CODING_ACTIVITY_TABLE = process.env.WAKATIME_EMBEDDABLE_CODING_ACTIVITY_TABLE || "";
+const WAKATIME_EMBEDDABLE_LANGUAGES_ACTIVITY_BAR = process.env.WAKATIME_EMBEDDABLE_LANGUAGES_ACTIVITY_BAR || "";
 const WAKATIME_CACHE_DURATION = Number(process.env.WAKATIME_CACHE_DURATION) || 60 * 60 * 1000; // default 1 hour
 
 let cachedData: any = null;
@@ -19,18 +20,33 @@ export async function GET() {
 	}
 
 	try {
-		const res = await fetch(WAKATIME_EMBEDDABLE_CODING_ACTIVITY_TABLE, {
-			cache: "no-store",
-			headers: {
-				"Cache-Control": "no-cache, no-store, must-revalidate",
-				Pragma: "no-cache",
-			},
-		});
+		const [codingActivityResponse, languagesActivityResponse] = await Promise.all([
+			fetch(WAKATIME_EMBEDDABLE_CODING_ACTIVITY_TABLE, {
+				cache: "no-store",
+				headers: {
+					"Cache-Control": "no-cache, no-store, must-revalidate",
+					Pragma: "no-cache",
+				},
+			}),
+			fetch(WAKATIME_EMBEDDABLE_LANGUAGES_ACTIVITY_BAR, {
+				cache: "no-store",
+				headers: {
+					"Cache-Control": "no-cache, no-store, must-revalidate",
+					Pragma: "no-cache",
+				},
+			}),
+		]);
 
-		if (!res.ok) throw new Error(`Failed to fetch WakaTime data, status: ${res.status}`);
+		if (!codingActivityResponse.ok || !languagesActivityResponse.ok) throw new Error(`Failed to fetch WakaTime data, status: ${codingActivityResponse.status}, ${languagesActivityResponse.status}`);
+
+		const codingActivityData = await codingActivityResponse.json();
+		const languagesActivityData = await languagesActivityResponse.json();
 
 		// Update the cache
-		cachedData = await res.json();
+		cachedData = {
+			codingActivityData,
+			languagesActivityData,
+		};
 		lastFetchTime = now;
 
 		console.log("WakaTime API fetched fresh data at:", new Date(now).toISOString());
