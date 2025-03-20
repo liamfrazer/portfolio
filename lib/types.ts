@@ -1,18 +1,18 @@
 import { LucideIcon } from "lucide-react";
 
-export interface WakaTimeCategory {
+export interface WakaTimeActivityCategory {
 	name: string; // Category name
 	total: number; // Total time spent in Category
 }
 
-export interface WakaTimeDay {
+export interface WakaTimeActivityDay {
 	date: string; // Date of entry
 	total: number; // Total time for the day
-	categories: WakaTimeCategory[]; // Array of Categories
+	categories: WakaTimeActivityCategory[]; // Array of Categories
 }
 
 export interface WakaTimeActivityResponse {
-	days: WakaTimeDay[];
+	days: WakaTimeActivityDay[];
 	status: string;
 	is_up_to_date: boolean;
 	is_up_to_date_pending_future: boolean;
@@ -31,7 +31,7 @@ export interface WakaTimeActivityChartProps {
 	loading: boolean;
 }
 
-export interface WakaTimeLanguageResponse {
+export interface WakaTimeLanguage {
 	name: string;
 	percent: number;
 	color: string;
@@ -41,6 +41,15 @@ export interface WakaTimeLanguageResponse {
 	minutes: number;
 	text: string;
 	total_seconds: number;
+}
+
+export interface WakaTimeLanguagesResponse {
+	data: WakaTimeLanguage[];
+}
+
+export interface WakaTimeLanguagesChartProps {
+	wakaLanguagesData: WakaTimeLanguagesResponse | null;
+	loading: boolean;
 }
 
 export interface WakaTimeResponse {
