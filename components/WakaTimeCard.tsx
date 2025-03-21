@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import { CircleCheckBig, AlertCircle, Hourglass } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import { Card, CardDescription, CardHeader, CardTitle, CardFooter, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -72,6 +73,8 @@ const WakaTimeCard = () => {
 			console.log("WakaTime API Response: ", data);
 			console.log("WakaTime Coding Activity Data: ", data.data.codingActivityData);
 			console.log("WakaTime Language Data: ", data.data.languagesActivityData);
+
+			toast("WakaTime API updated");
 
 			// Update state with new WakaTime data
 			setWakaAPI({
@@ -200,8 +203,12 @@ const WakaTimeCard = () => {
 			</CardHeader>
 			<CardContent>
 				<div className="gap-2">
-					<WakaTimeCodingActivityChart wakaActivityData={wakaActivityData} loading={loading} />
-					<WakaTimeLanguagesChart wakaLanguagesData={wakaLanguagesData} loading={loading} />
+					<div className="gap-2 mb-2">
+						<WakaTimeCodingActivityChart wakaActivityData={wakaActivityData} loading={loading} />
+					</div>
+					<div className="gap-2">
+						<WakaTimeLanguagesChart wakaLanguagesData={wakaLanguagesData} loading={loading} />
+					</div>
 				</div>
 			</CardContent>
 		</Card>
