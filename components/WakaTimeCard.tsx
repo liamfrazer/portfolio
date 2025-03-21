@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import WakaTimeCodingActivityChart from "@/components/WakaTimeCodingActivityChart";
 import WakaTimeLanguagesChart from "@/components/WakaTimeLanguagesChart";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui/resizable";
 
 import { WakaTimeResponse, WakaTimeActivityResponse, WakaTimeLanguagesResponse } from "@/lib/types";
 
@@ -68,11 +69,6 @@ const WakaTimeCard = () => {
 			if (!data || typeof data !== "object") {
 				throw new Error("Invalid data format received");
 			}
-
-			// TODO: Remove once not required
-			console.log("WakaTime API Response: ", data);
-			console.log("WakaTime Coding Activity Data: ", data.data.codingActivityData);
-			console.log("WakaTime Language Data: ", data.data.languagesActivityData);
 
 			toast("WakaTime API updated");
 
@@ -172,7 +168,7 @@ const WakaTimeCard = () => {
 					</CardDescription>
 				</div>
 				<div className="flex">
-					<button className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left">
+					<button className="border-none relative z-30 flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-left">
 						<div className="flex items-center gap-1 leading-none text-muted-foreground min-h-6">
 							<span className="flex items-center gap-1">API Status:</span>
 							<span className="flex items-center">
@@ -203,12 +199,15 @@ const WakaTimeCard = () => {
 			</CardHeader>
 			<CardContent>
 				<div className="gap-2">
-					<div className="gap-2 mb-2">
-						<WakaTimeCodingActivityChart wakaActivityData={wakaActivityData} loading={loading} />
-					</div>
-					<div className="gap-2">
-						<WakaTimeLanguagesChart wakaLanguagesData={wakaLanguagesData} loading={loading} />
-					</div>
+					<ResizablePanelGroup direction="horizontal">
+						<ResizablePanel defaultSize={60}>
+							<WakaTimeCodingActivityChart wakaActivityData={wakaActivityData} loading={loading} />
+						</ResizablePanel>
+						<ResizableHandle withHandle />
+						<ResizablePanel defaultSize={40}>
+							<WakaTimeLanguagesChart wakaLanguagesData={wakaLanguagesData} loading={loading} />
+						</ResizablePanel>
+					</ResizablePanelGroup>
 				</div>
 			</CardContent>
 		</Card>
