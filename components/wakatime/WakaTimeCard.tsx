@@ -169,11 +169,11 @@ const WakaTimeCard = () => {
 						<ResizableHandle withHandle />
 						<ResizablePanel defaultSize={30}>
 							<ResizablePanelGroup direction="vertical">
-								<ResizablePanel defaultSize={10}>
+								<ResizablePanel defaultSize={15}>
 									<WakaTimeAPI loading={loading} error={error} wakaAPI={wakaAPI} countdown={countdown} formatTimeRemaining={formatTimeRemaining} />
 								</ResizablePanel>
 								<ResizableHandle withHandle />
-								<ResizablePanel defaultSize={90}>
+								<ResizablePanel defaultSize={85}>
 									<WakaTimeLanguagesChart wakaLanguagesData={wakaLanguagesData} loading={loading} />
 								</ResizablePanel>
 							</ResizablePanelGroup>
