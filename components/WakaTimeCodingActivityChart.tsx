@@ -7,6 +7,7 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { WakaTimeActivityChartProps } from "@/lib/types";
+import { formatTime } from "@/lib/utils";
 
 const chartConfig = {
 	total: {
@@ -24,13 +25,6 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const WakaTimeCodingActivityChart = ({ wakaActivityData, loading }: WakaTimeActivityChartProps) => {
-	const formatTime = (s: number) => {
-		if (s == null || s === undefined) return "N/A";
-		const hours = Math.floor(s / 1);
-		const minutes = Math.floor((s % 3600) / 60);
-		return `${hours}hrs ${minutes}mins`;
-	};
-
 	const chartData = loading
 		? []
 		: wakaActivityData?.days
@@ -49,15 +43,15 @@ const WakaTimeCodingActivityChart = ({ wakaActivityData, loading }: WakaTimeActi
 			<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
 				<div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
 					<CardTitle>Coding Activity</CardTitle>
-					<CardDescription>Showing total coding activity per day</CardDescription>
+					<CardDescription>Showing total coding time per active day</CardDescription>
 				</div>
 				<div className="flex">
 					<button className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
-						<span className="text-sx text-muted-foreground">Hours</span>
+						<span className="text-sx text-muted-foreground">Total Time</span>
 						<span className="text-lg font-bold leading-none sm:text-3xl">{totalHours}</span>
 					</button>
 					<button className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
-						<span className="text-sx text-muted-foreground">Days</span>
+						<span className="text-sx text-muted-foreground">Total Days</span>
 						<span className="text-lg font-bold leading-none sm:text-3xl">{totalDays}</span>
 					</button>
 				</div>

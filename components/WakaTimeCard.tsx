@@ -12,6 +12,7 @@ import WakaTimeLanguagesChart from "@/components/WakaTimeLanguagesChart";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui/resizable";
 
 import { WakaTimeResponse, WakaTimeActivityResponse, WakaTimeLanguagesResponse } from "@/lib/types";
+import WakaTimeLatestActivity from "./WakaTimeLatestActivity";
 
 const WakaTimeCard = () => {
 	// Set WakaTime Data States
@@ -158,17 +159,17 @@ const WakaTimeCard = () => {
 		return `${minutes}m ${seconds}s`;
 	};
 
+	// TODO: Can I remove the top bar and move the API status to the bottom right to save room?
+
 	return (
 		<Card>
 			<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
 				<div className="flex flex-1 flex-col justify-center cap-1 px-6 py-5 sm:py-6">
 					<CardTitle>Coding Stats</CardTitle>
-					<CardDescription className="min-h-6">
-						Personal time spent coding provided by <Link href="https://wakatime.com">WakaTime</Link>
-					</CardDescription>
+					<CardDescription className="min-h-6">Personal coding time tracker</CardDescription>
 				</div>
 				<div className="flex">
-					<button className="border-none relative z-30 flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-left">
+					<button className="border-l-1 relative z-30 flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-left">
 						<div className="flex items-center gap-1 leading-none text-muted-foreground min-h-6">
 							<span className="flex items-center gap-1">API Status:</span>
 							<span className="flex items-center">
@@ -200,12 +201,20 @@ const WakaTimeCard = () => {
 			<CardContent>
 				<div className="gap-2">
 					<ResizablePanelGroup direction="horizontal">
-						<ResizablePanel defaultSize={60}>
+						<ResizablePanel defaultSize={70}>
 							<WakaTimeCodingActivityChart wakaActivityData={wakaActivityData} loading={loading} />
 						</ResizablePanel>
 						<ResizableHandle withHandle />
-						<ResizablePanel defaultSize={40}>
-							<WakaTimeLanguagesChart wakaLanguagesData={wakaLanguagesData} loading={loading} />
+						<ResizablePanel defaultSize={30}>
+							<ResizablePanelGroup direction="vertical">
+								<ResizablePanel defaultSize={75}>
+									<WakaTimeLanguagesChart wakaLanguagesData={wakaLanguagesData} loading={loading} />
+								</ResizablePanel>
+								<ResizableHandle withHandle />
+								<ResizablePanel defaultSize={25}>
+									<WakaTimeLatestActivity wakaActivityData={wakaActivityData} loading={loading} />
+								</ResizablePanel>
+							</ResizablePanelGroup>
 						</ResizablePanel>
 					</ResizablePanelGroup>
 				</div>
