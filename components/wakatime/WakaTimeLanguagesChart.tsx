@@ -35,7 +35,7 @@ const WakaTimeLanguagesChart = ({ wakaLanguagesData, loading }: WakaTimeLanguage
 		[loading, wakaLanguagesData]
 	);
 	return (
-		<Card className="border-none">
+		<Card className="border-none h-full rounded-none">
 			<CardHeader>
 				<CardTitle>Languages</CardTitle>
 				<CardDescription>Hours spent on different languages</CardDescription>
