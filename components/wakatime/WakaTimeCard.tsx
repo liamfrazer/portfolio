@@ -1,15 +1,13 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import { CircleCheckBig, AlertCircle, Hourglass } from "lucide-react";
 import { toast } from "sonner";
 
-import { Card, CardDescription, CardHeader, CardTitle, CardFooter, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 
 import WakaTimeCodingActivityChart from "@/components/wakatime/WakaTimeCodingActivityChart";
 import WakaTimeLanguagesChart from "@/components/wakatime/WakaTimeLanguagesChart";
-import WakaTimeActivityToday from "@/components/wakatime/WakaTimeActivityToday";
+import WakaTimeAPI from "@/components/wakatime/WakaTimeAPI";
 
 import { WakaTimeResponse, WakaTimeActivityResponse, WakaTimeLanguagesResponse } from "@/lib/types";
 
@@ -158,45 +156,10 @@ const WakaTimeCard = () => {
 		return `${minutes}m ${seconds}s`;
 	};
 
-	// TODO: Can I remove the top bar and move the API status to the bottom right to save room?
+	// TODO: Fix the responsive bugs when the page is reduced to a small size
 
 	return (
 		<Card>
-			<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-				<div className="flex flex-1 flex-col justify-center cap-1 px-6 py-5 sm:py-6">
-					<CardTitle>Coding Stats</CardTitle>
-					<CardDescription className="min-h-6">Personal coding time tracker</CardDescription>
-				</div>
-				<div className="flex">
-					<button className="border-l-1 relative z-30 flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-left">
-						<div className="flex items-center gap-1 leading-none text-muted-foreground min-h-6">
-							<span className="flex items-center gap-1">API Status:</span>
-							<span className="flex items-center">
-								{loading ? (
-									<Skeleton className="h-4 w-16" />
-								) : error ? (
-									<span className="text-red-500 flex items-center">
-										<AlertCircle className="w-4 h-4 mr-1" /> Error
-									</span>
-								) : (
-									<span className={wakaAPI?.status === "ok" ? "text-green-500" : wakaAPI?.status === "stale" ? "text-yellow-500" : "text-red-500"}>
-										<CircleCheckBig className="w-4 h-4 mr-1" />
-									</span>
-								)}
-							</span>
-						</div>
-						<div className="flex gap-1 items-center leading-none text-muted-foreground min-h-6">
-							<span className="flex items-center gap-1">Refresh:</span>
-							<span className="flex items-center">{loading ? <Skeleton className="h-4 w-20" /> : <span className="flex items-center">{formatTimeRemaining(countdown || 0)}</span>}</span>
-						</div>
-						<div className="flex gap-1 items-center leading-none text-muted-foreground min-h-6">
-							<span>Updated:</span>
-							<span>{loading ? <Skeleton className="h-4 w-32" /> : error ? "Failed to update" : wakaAPI?.lastFetchTime ? new Date(wakaAPI.lastFetchTime).toLocaleString().slice(12, 20) : "N/A"}</span>
-						</div>
-						{error && <div className="text-xs text-red-500 w-full mt-2 p-2 bg-red-50 rounded">Error: {error}</div>}
-					</button>
-				</div>
-			</CardHeader>
 			<CardContent>
 				<div className="gap-2">
 					<ResizablePanelGroup direction="horizontal">
@@ -206,12 +169,12 @@ const WakaTimeCard = () => {
 						<ResizableHandle withHandle />
 						<ResizablePanel defaultSize={30}>
 							<ResizablePanelGroup direction="vertical">
-								<ResizablePanel defaultSize={75}>
-									<WakaTimeLanguagesChart wakaLanguagesData={wakaLanguagesData} loading={loading} />
+								<ResizablePanel defaultSize={10}>
+									<WakaTimeAPI loading={loading} error={error} wakaAPI={wakaAPI} countdown={countdown} formatTimeRemaining={formatTimeRemaining} />
 								</ResizablePanel>
 								<ResizableHandle withHandle />
-								<ResizablePanel defaultSize={25}>
-									<WakaTimeActivityToday wakaActivityData={wakaActivityData} loading={loading} />
+								<ResizablePanel defaultSize={90}>
+									<WakaTimeLanguagesChart wakaLanguagesData={wakaLanguagesData} loading={loading} />
 								</ResizablePanel>
 							</ResizablePanelGroup>
 						</ResizablePanel>

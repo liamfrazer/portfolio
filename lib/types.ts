@@ -26,6 +26,14 @@ export interface WakaTimeActivityResponse {
 	human_readable_range: string;
 }
 
+export interface WakaTimeAPIStatusProps {
+	loading: boolean;
+	error: string | null;
+	wakaAPI: { status: string; lastFetchTime: string | null } | null;
+	countdown: number | null;
+	formatTimeRemaining: (seconds: number) => string;
+}
+
 export interface WakaTimeActivityChartProps {
 	wakaActivityData: WakaTimeActivityResponse | null;
 	loading: boolean;

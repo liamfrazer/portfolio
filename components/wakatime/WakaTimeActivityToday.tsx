@@ -1,7 +1,5 @@
 "use client";
 
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-
 import { WakaTimeActivityChartProps } from "@/lib/types";
 import { formatTime } from "@/lib/utils";
 
@@ -14,12 +12,10 @@ const WakaTimeActivityToday = ({ wakaActivityData, loading }: WakaTimeActivityCh
 
 	return (
 		<div className="p-4">
-			<Card>
-				<CardHeader>
-					<CardDescription className="text-sx text-muted-foreground">Activity Today</CardDescription>
-					<CardTitle className="text-lg font-bold leading-none sm:text-3xl">{totalHours}</CardTitle>
-				</CardHeader>
-			</Card>
+			<div className="flex flex-col gap-1 items-center justify-center">
+				<span className="text-sx text-muted-foreground">Activity Today</span>
+				<span className="text-lg font-bold leading-none sm:text-3xl">{totalHours}</span>
+			</div>
 		</div>
 	);
 };

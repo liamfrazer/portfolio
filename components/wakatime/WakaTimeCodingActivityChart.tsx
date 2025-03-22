@@ -25,10 +25,11 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const WakaTimeCodingActivityChart = ({ wakaActivityData, loading }: WakaTimeActivityChartProps) => {
+	const today = new Date().toISOString().split("T")[0];
 	const chartData = loading
 		? []
 		: wakaActivityData?.days
-				.filter((day) => day.total > 1800)
+				.filter((day) => day.date === today || day.total > 1) // Filters out 0 activity days but keeps todays data
 				.map((day) => ({
 					date: day.date,
 					total: day.total / 3600,
@@ -38,6 +39,9 @@ const WakaTimeCodingActivityChart = ({ wakaActivityData, loading }: WakaTimeActi
 	const totalDays = chartData?.length;
 	const totalHours = formatTime(chartData?.reduce((sum, day) => sum + (day.total ?? 0), 0));
 
+	const activityToday = wakaActivityData?.days.filter((day) => day.date === today).reduce((sum, day) => sum + day.total, 0) ?? 0;
+	const activityTodayTotalHours = formatTime(activityToday / 3600);
+
 	return (
 		<Card className="border-none">
 			<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
@@ -46,14 +50,21 @@ const WakaTimeCodingActivityChart = ({ wakaActivityData, loading }: WakaTimeActi
 					<CardDescription>Showing total coding time per active day</CardDescription>
 				</div>
 				<div className="flex">
-					<button className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
+					{/* Activity Today */}
+					<div className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
+						<span className="text-sx text-muted-foreground">Activity Today</span>
+						<span className="text-lg font-bold leading-none sm:text-3xl">{activityTodayTotalHours}</span>
+					</div>
+					{/* Total Time */}
+					<div className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
 						<span className="text-sx text-muted-foreground">Total Time</span>
 						<span className="text-lg font-bold leading-none sm:text-3xl">{totalHours}</span>
-					</button>
-					<button className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
+					</div>
+					{/* Total Days */}
+					<div className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
 						<span className="text-sx text-muted-foreground">Total Days</span>
 						<span className="text-lg font-bold leading-none sm:text-3xl">{totalDays}</span>
-					</button>
+					</div>
 				</div>
 			</CardHeader>
 			<CardContent className="px-2 sm:p-6">
