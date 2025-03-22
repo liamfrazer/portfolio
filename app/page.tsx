@@ -1,4 +1,4 @@
-import WakaTimeCard from "@/components/WakaTimeCard";
+import WakaTimeCard from "@/components/wakatime/WakaTimeCard";
 
 export default function Home() {
 	return (

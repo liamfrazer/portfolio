@@ -1,18 +1,17 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import { CircleCheckBig, AlertCircle, Hourglass } from "lucide-react";
-import Link from "next/link";
 import { toast } from "sonner";
 
 import { Card, CardDescription, CardHeader, CardTitle, CardFooter, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 
-import WakaTimeCodingActivityChart from "@/components/WakaTimeCodingActivityChart";
-import WakaTimeLanguagesChart from "@/components/WakaTimeLanguagesChart";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui/resizable";
+import WakaTimeCodingActivityChart from "@/components/wakatime/WakaTimeCodingActivityChart";
+import WakaTimeLanguagesChart from "@/components/wakatime/WakaTimeLanguagesChart";
+import WakaTimeActivityToday from "@/components/wakatime/WakaTimeActivityToday";
 
 import { WakaTimeResponse, WakaTimeActivityResponse, WakaTimeLanguagesResponse } from "@/lib/types";
-import WakaTimeLatestActivity from "./WakaTimeLatestActivity";
 
 const WakaTimeCard = () => {
 	// Set WakaTime Data States
@@ -212,7 +211,7 @@ const WakaTimeCard = () => {
 								</ResizablePanel>
 								<ResizableHandle withHandle />
 								<ResizablePanel defaultSize={25}>
-									<WakaTimeLatestActivity wakaActivityData={wakaActivityData} loading={loading} />
+									<WakaTimeActivityToday wakaActivityData={wakaActivityData} loading={loading} />
 								</ResizablePanel>
 							</ResizablePanelGroup>
 						</ResizablePanel>
